@@ -47,15 +47,53 @@ const writeFilePromise = (file, data) => {
 //   .catch(err => console.log(err));
 
 // Async/Await
+// const getDocPic = async () => {
+//   try {
+//     const data = await readFilePromise(`${__dirname}/dog.txt`);
+//     console.log(`Bread: ${data}`);
+//     const res = await superagent.get(
+//       `https://dog.ceo/api/breed/${data}/images/random`
+//     );
+//     console.log(res.body);
+//     await writeFilePromise('dog-img.txt', res.body.message);
+//     console.log('Random dog image saved to file!');
+//   } catch (err) {
+//     throw err;
+//   }
+//   return '2: 🐶';
+// };
+// (async () => {
+//   try {
+//     console.log('1: get 🐶');
+//     console.log(await getDocPic());
+//     console.log('3: done');
+//   } catch (err) {
+//     console.log(err);
+//   }
+// })();
+
+// Async/Await - Running Promises in parallel
 const getDocPic = async () => {
   try {
     const data = await readFilePromise(`${__dirname}/dog.txt`);
     console.log(`Bread: ${data}`);
-    const res = await superagent.get(
+    const res1Promise = superagent.get(
       `https://dog.ceo/api/breed/${data}/images/random`
     );
-    console.log(res.body);
-    await writeFilePromise('dog-img.txt', res.body.message);
+    const res2Promise = superagent.get(
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
+    const res3Promise = superagent.get(
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
+    const res4Promise = superagent.get(
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
+    const imgs = (
+      await Promise.all([res1Promise, res2Promise, res3Promise, res4Promise])
+    ).map(res => res.body.message);
+    console.log(imgs);
+    await writeFilePromise('dog-img.txt', imgs.join('\n'));
     console.log('Random dog image saved to file!');
   } catch (err) {
     throw err;
