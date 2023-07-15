@@ -60,10 +60,13 @@ const getDocPic = async () => {
   } catch (err) {
     throw err;
   }
+  return '2: 🐶';
 };
 (async () => {
   try {
-    await getDocPic();
+    console.log('1: get 🐶');
+    console.log(await getDocPic());
+    console.log('3: done');
   } catch (err) {
     console.log(err);
   }
